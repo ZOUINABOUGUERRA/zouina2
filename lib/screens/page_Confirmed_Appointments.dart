@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meditim_assistance/constants/colors.dart';
-//import 'package:meditim_assistance/routes/app_routes.dart';
 
 class ConfirmedAppointmentsScreen extends StatefulWidget {
   const ConfirmedAppointmentsScreen({super.key});
@@ -17,12 +16,12 @@ class _ConfirmedAppointmentsScreenState
 
   final List<Map<String, dynamic>> _allAppointments = [
     {
-      'patientName': 'أحمد محمد',
+      'patientName': 'Ahmed Mohamed',
       'date': '2023-10-20 09:00 AM',
       'avatar': 'assets/avatar3.png'
     },
     {
-      'patientName': 'فاطمة علي',
+      'patientName': 'Fatima Ali',
       'date': '2023-10-21 11:30 AM',
       'avatar': 'assets/avatar4.png'
     },
@@ -46,11 +45,11 @@ class _ConfirmedAppointmentsScreenState
 
   InputDecoration _searchDecoration() {
     return InputDecoration(
-      hintText: 'ابحث عن مريض...',
-      hintStyle: const TextStyle(color: Colors.grey),
+      hintText: 'Search for a patient...',
+      hintStyle: const TextStyle(color: AppColors.textColor),
       prefixIcon: const Icon(Icons.search, color: AppColors.secondaryColor),
       filled: true,
-      fillColor: AppColors.textColor,
+      fillColor: AppColors.backgroundColor,
       contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
@@ -65,7 +64,7 @@ class _ConfirmedAppointmentsScreenState
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         title: const Text(
-          'المواعيد المؤكدة',
+          'Confirmed Appointments',
           style: TextStyle(
             color: AppColors.whiteColor,
             fontWeight: FontWeight.bold,
@@ -77,16 +76,28 @@ class _ConfirmedAppointmentsScreenState
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
-              controller: _searchController,
-              decoration: _searchDecoration(),
+            Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: TextField(
+                controller: _searchController,
+                decoration: _searchDecoration(),
+              ),
             ),
             const SizedBox(height: 20),
             Expanded(
               child: _filteredAppointments.isEmpty
                   ? const Center(
                       child: Text(
-                        'لا توجد مواعيد',
+                        'No appointments found',
                         style: TextStyle(color: AppColors.textColor),
                       ),
                     )
@@ -145,13 +156,14 @@ class _ConfirmedAppointmentsScreenState
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('إلغاء الموعد',
+        title: const Text('Cancel Appointment',
             style: TextStyle(color: AppColors.primary)),
-        content: Text('هل تريد حقاً إلغاء موعد ${appointment['patientName']}؟'),
+        content: Text(
+            'Are you sure you want to cancel the appointment with ${appointment['patientName']}?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('تراجع',
+            child: const Text('Back',
                 style: TextStyle(color: AppColors.textColor)),
           ),
           TextButton(
@@ -162,7 +174,7 @@ class _ConfirmedAppointmentsScreenState
               });
               Navigator.pop(context);
             },
-            child: Text('تأكيد', style: TextStyle(color: Colors.red[700])),
+            child: Text('Confirm', style: TextStyle(color: Colors.red[700])),
           ),
         ],
       ),

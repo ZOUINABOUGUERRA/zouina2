@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+//import 'package:badges/badges.dart' as badges;
 import 'package:meditim_assistance/constants/colors.dart';
 import 'package:meditim_assistance/routes/app_routes.dart';
 import 'package:meditim_assistance/widgets/custom_nav_bar.dart';
 import 'package:meditim_assistance/screens/page_Confirmed_Appointments.dart';
-import 'package:meditim_assistance/screens/page_add_monthly_appointements.dart';
-import 'package:meditim_assistance/screens/page_add_weekly_app.dart';
 import 'package:meditim_assistance/screens/page_setting_assistant.dart';
-import 'package:meditim_assistance/screens/show_monthly_oppoientment.dart';
-import 'package:meditim_assistance/screens/show_weekly_oppointments.dart';
+//import 'package:meditim_assistance/screens/page_Notification_assistant.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   final PageController _pageController = PageController();
+  final int _notificationCount = 3;
 
   final List<Widget> _pages = [
     _MainContent(),
@@ -42,15 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppColors.primary,
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.whiteColor),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications, color: Colors.white),
-            tooltip: 'الإشعارات',
-            onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.pageNotificationassistant);
-            },
-          ),
-        ],
       ),
       body: PageView(
         controller: _pageController,
@@ -59,9 +49,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: CustomNavBar(
         currentIndex: _currentIndex,
+        //notificationCount: _notificationCount,
         onTabChanged: (index) {
           setState(() => _currentIndex = index);
-          _pageController.jumpToPage(index);
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
         },
       ),
     );
@@ -80,44 +75,208 @@ class _MainContent extends StatelessWidget {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 800),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Wrap(
-                    spacing: 20,
-                    runSpacing: 20,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _buildResponsiveCard(
-                        isTabletOrBigger,
-                        constraints.maxWidth,
-                        child: _buildAppointmentSection(
-                          title: 'Add Appointment',
-                          options: ['Weekly', 'Monthly'],
-                          icon: Icons.add_circle_outlined,
-                          onTap: (option) => _navigate(
-                              context, AppRoutes.addAppointment, option),
+                      const Text(
+                        "Welcome, Assistant",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textColor,
                         ),
                       ),
-                      _buildResponsiveCard(
-                        isTabletOrBigger,
-                        constraints.maxWidth,
-                        child: _buildAppointmentSection(
-                          title: 'Show Appointment',
-                          options: ['Weekly', 'Monthly'],
-                          icon: Icons.calendar_today_outlined,
-                          onTap: (option) => _navigatee(
-                              context, AppRoutes.showAppointment, option),
-                        ),
-                      ),
-                      _buildResponsiveCard(
-                        isTabletOrBigger,
-                        constraints.maxWidth,
-                        child: _buildTodayAppointmentsSection(context),
-                      ),
-                      _buildResponsiveCard(
-                        isTabletOrBigger,
-                        constraints.maxWidth,
-                        child: _buildArchiveSection(context),
+                      IconButton(
+                        icon: const Icon(Icons.notifications,
+                            color: AppColors.primary),
+                        onPressed: () => Navigator.pushNamed(
+                            context, AppRoutes.pageNotificationassistant),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 16),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 20,
+                      runSpacing: 20,
+                      children: [
+                        _buildResponsiveCard(
+                          isTabletOrBigger,
+                          constraints.maxWidth,
+                          child: _AnimatedCard(
+                            onTap: () => Navigator.pushNamed(
+                                context, AppRoutes.addAppointment),
+                            child: const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Hero(
+                                        tag: 'icon_add',
+                                        child: Icon(Icons.add_circle_outlined,
+                                            color: AppColors.primary, size: 28),
+                                      ),
+                                      SizedBox(width: 12),
+                                      Text(
+                                        'Add Appointment',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    'Create a new appointment',
+                                    style: TextStyle(
+                                      color: AppColors.textColor,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        _buildResponsiveCard(
+                          isTabletOrBigger,
+                          constraints.maxWidth,
+                          child: _AnimatedCard(
+                            onTap: () => Navigator.pushNamed(
+                                context, AppRoutes.showAppointment),
+                            child: const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.calendar_today_outlined,
+                                          color: AppColors.primary, size: 28),
+                                      SizedBox(width: 12),
+                                      Text(
+                                        'Show Appointment',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    'Browse scheduled appointments',
+                                    style: TextStyle(
+                                      color: AppColors.textColor,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        _buildResponsiveCard(
+                          isTabletOrBigger,
+                          constraints.maxWidth,
+                          child: _AnimatedCard(
+                            onTap: () => Navigator.pushNamed(
+                                context, AppRoutes.todayAppointments),
+                            child: const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.event_available_outlined,
+                                          color: AppColors.primary, size: 28),
+                                      SizedBox(width: 12),
+                                      Text(
+                                        "Today's Appointments",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    "Check today's schedule",
+                                    style: TextStyle(
+                                      color: AppColors.textColor,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        _buildResponsiveCard(
+                          isTabletOrBigger,
+                          constraints.maxWidth,
+                          child: _AnimatedCard(
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              AppRoutes.pageArchiv,
+                              arguments: {
+                                'type': 'archived',
+                                'patient': 'John Doe',
+                                'date': '2025-04-12',
+                                'status': 'Completed',
+                              },
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.archive_outlined,
+                                          color: AppColors.primary, size: 28),
+                                      SizedBox(width: 12),
+                                      Text(
+                                        'Archive',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    'View Archived Appointments',
+                                    style: TextStyle(
+                                      color: AppColors.textColor,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -135,202 +294,43 @@ class _MainContent extends StatelessWidget {
       child: child,
     );
   }
+}
 
-  Widget _buildAppointmentSection({
-    required String title,
-    required List<String> options,
-    required IconData icon,
-    required Function(String?) onTap,
-  }) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () => onTap(null),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(icon, color: AppColors.primary, size: 28),
-                  const SizedBox(width: 12),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textColor,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 8,
-                runSpacing: 8,
-                children: options.map((option) {
-                  return ChoiceChip(
-                    label: Text(
-                      option,
-                      style: const TextStyle(
-                        color: AppColors.whiteColor,
-                        fontSize: 14,
-                      ),
-                    ),
-                    selected: false,
-                    selectedColor: AppColors.primary,
-                    backgroundColor: AppColors.primary.withOpacity(0.6),
-                    onSelected: (_) => onTap(option),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ],
+class _AnimatedCard extends StatefulWidget {
+  final VoidCallback onTap;
+  final Widget child;
+
+  const _AnimatedCard({required this.onTap, required this.child});
+
+  @override
+  State<_AnimatedCard> createState() => _AnimatedCardState();
+}
+
+class _AnimatedCardState extends State<_AnimatedCard>
+    with SingleTickerProviderStateMixin {
+  double _scale = 1.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _scale = 0.97),
+      onTapUp: (_) {
+        setState(() => _scale = 1.0);
+        widget.onTap();
+      },
+      onTapCancel: () => setState(() => _scale = 1.0),
+      child: AnimatedScale(
+        scale: _scale,
+        duration: const Duration(milliseconds: 100),
+        child: Card(
+          elevation: 4,
+          shadowColor: Colors.black.withOpacity(0.1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
+          child: widget.child,
         ),
       ),
     );
-  }
-
-  Widget _buildTodayAppointmentsSection(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () => Navigator.pushNamed(context, AppRoutes.todayAppointments),
-        child: const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.event_available_outlined,
-                      color: AppColors.primary, size: 28),
-                  SizedBox(width: 12),
-                  Text(
-                    'Today\'s Appointments',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textColor,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Check Today\'s Schedule',
-                style: TextStyle(
-                  color: AppColors.textColor,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildArchiveSection(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () => Navigator.pushNamed(
-          context,
-          AppRoutes.pageArchiv,
-          arguments: {
-            'type': 'archived',
-            'patient': 'John Doe',
-            'date': '2025-04-12',
-            'status': 'Completed',
-          },
-        ),
-        child: const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.archive_outlined,
-                      color: AppColors.primary, size: 28),
-                  SizedBox(width: 12),
-                  Text(
-                    'Archive',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textColor,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Text(
-                'View Archived Appointments',
-                style: TextStyle(
-                  color: AppColors.textColor,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _navigate(BuildContext context, String route, String? option) {
-    if (route == AppRoutes.addAppointment && option == 'Monthly') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const AddMonthlyAppointmentPage()),
-      );
-    } else if (route == AppRoutes.addAppointment && option == 'Weekly') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const AddweeklyAppointmentPage()),
-      );
-    } else {
-      Navigator.pushNamed(
-        context,
-        route,
-        arguments: {'type': option ?? 'regular'},
-      );
-    }
-  }
-
-  void _navigatee(BuildContext context, String route, String? option) {
-    if (route == AppRoutes.showAppointment && option == 'Monthly') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const MonthlyAppointmentsPage()),
-      );
-    } else if (route == AppRoutes.showAppointment && option == 'Weekly') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const WeeklyAppointmentsPage()),
-      );
-    } else {
-      Navigator.pushNamed(
-        context,
-        route,
-        arguments: {'type': option ?? 'regular'},
-      );
-    }
   }
 }

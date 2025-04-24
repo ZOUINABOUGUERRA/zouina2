@@ -12,7 +12,7 @@ class _AssistantProfilePageState extends State<AssistantProfilePage> {
   bool isEditing = false;
 
   final TextEditingController nameController =
-      TextEditingController(text: 'سارة الإدريسي');
+      TextEditingController(text: 'Sara El Idrissi');
   final TextEditingController emailController =
       TextEditingController(text: 'sara@example.com');
   final TextEditingController phoneController =
@@ -24,7 +24,7 @@ class _AssistantProfilePageState extends State<AssistantProfilePage> {
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         title: const Text(
-          'ملف المساعد',
+          'Assistant Profile',
           style: TextStyle(color: AppColors.whiteColor),
         ),
         centerTitle: true,
@@ -38,8 +38,7 @@ class _AssistantProfilePageState extends State<AssistantProfilePage> {
                 if (isEditing) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('تم حفظ التغييرات',
-                          textDirection: TextDirection.rtl),
+                      content: Text('Changes saved'),
                     ),
                   );
                 }
@@ -59,7 +58,7 @@ class _AssistantProfilePageState extends State<AssistantProfilePage> {
             ),
             const SizedBox(height: 20),
             const Text(
-              'معلومات المساعد',
+              'Assistant Information',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -67,17 +66,16 @@ class _AssistantProfilePageState extends State<AssistantProfilePage> {
               ),
             ),
             const SizedBox(height: 30),
-            _buildFieldCard(label: 'الاسم', controller: nameController),
+            _buildFieldCard(label: 'Name', controller: nameController),
             const SizedBox(height: 16),
-            _buildFieldCard(
-                label: 'البريد الإلكتروني', controller: emailController),
+            _buildFieldCard(label: 'Email', controller: emailController),
             const SizedBox(height: 16),
-            _buildFieldCard(label: 'رقم الهاتف', controller: phoneController),
+            _buildFieldCard(label: 'Phone Number', controller: phoneController),
             const SizedBox(height: 30),
             if (isEditing)
               ElevatedButton.icon(
                 icon: const Icon(Icons.save),
-                label: const Text('حفظ التغييرات'),
+                label: const Text('Save Changes'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   shape: RoundedRectangleBorder(
@@ -91,7 +89,7 @@ class _AssistantProfilePageState extends State<AssistantProfilePage> {
                     isEditing = false;
                   });
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('تم حفظ التغييرات')),
+                    const SnackBar(content: Text('Changes saved')),
                   );
                 },
               ),

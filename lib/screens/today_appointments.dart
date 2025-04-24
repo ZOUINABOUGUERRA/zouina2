@@ -11,27 +11,7 @@ class TodayAppointmentsScreen extends StatefulWidget {
 }
 
 class _TodayAppointmentsScreenState extends State<TodayAppointmentsScreen> {
-  // بيانات تجريبية - يمكن استبدالها ببيانات حقيقية
-  List<Map<String, String>> appointmentss = [
-    {
-      'order': '3',
-      'name': 'zouina bouguerra',
-      'date': 'Monday 23-03-2025',
-      'time': '04:45 PM'
-    },
-    {
-      'order': '1',
-      'name': 'zouina bouguerra',
-      'date': 'Monday 23-03-2025',
-      'time': '11:00 AM'
-    },
-    {
-      'order': '2',
-      'name': 'zouina bouguerra',
-      'date': 'Monday 23-03-2025',
-      'time': '02:30 PM'
-    },
-  ];
+  // Sample data - can be replaced with real data
   List<Map<String, String>> appointments = [
     {
       'order': '1',
@@ -39,9 +19,9 @@ class _TodayAppointmentsScreenState extends State<TodayAppointmentsScreen> {
       'date': 'Monday 23-03-2025',
       'time': '11:00 AM',
       'phone': '0554 32 45 67',
-      'address': 'Rue 20 Août, Alger',
-      'notes': 'تعاني من صداع مستمر.',
-      'status': 'في المتابعة',
+      'address': 'Rue 20 Août, Algiers',
+      'notes': 'Suffers from persistent headaches.',
+      'status': 'Under follow-up',
     },
     {
       'order': '2',
@@ -50,8 +30,8 @@ class _TodayAppointmentsScreenState extends State<TodayAppointmentsScreen> {
       'time': '02:30 PM',
       'phone': '0661 98 12 33',
       'address': 'Lotissement 7, Oran',
-      'notes': 'مريض سكري مزمن.',
-      'status': 'يحتاج تحاليل',
+      'notes': 'Chronic diabetic patient.',
+      'status': 'Needs tests',
     },
   ];
 
@@ -143,10 +123,10 @@ class _TodayAppointmentsScreenState extends State<TodayAppointmentsScreen> {
               context,
               AppRoutes.pageDetailsPatient,
               arguments: {
-                'name': 'zouina bouguerra',
-                'date': 'Monday 23-03-2025',
-                'time': '04:45 PM',
-                'order': '3',
+                'name': appointment['name'],
+                'date': appointment['date'],
+                'time': appointment['time'],
+                'order': appointment['order'],
               },
             );
           },
@@ -156,7 +136,7 @@ class _TodayAppointmentsScreenState extends State<TodayAppointmentsScreen> {
               fontSize: 16,
               fontWeight: FontWeight.bold,
               color: AppColors.textColor,
-              decoration: TextDecoration.underline, // يبين أنه قابل للضغط
+              decoration: TextDecoration.underline,
             ),
           ),
         ),
@@ -181,12 +161,12 @@ class _TodayAppointmentsScreenState extends State<TodayAppointmentsScreen> {
               icon:
                   const Icon(Icons.medical_services, color: AppColors.primary),
               onPressed: () => _archiveAppointment(appointment),
-              tooltip: 'تم الفحص',
+              tooltip: 'Checked',
             ),
             IconButton(
               icon: Icon(Icons.delete, color: Colors.red[700]),
               onPressed: () => _deleteAppointment(index),
-              tooltip: 'حذف الموعد',
+              tooltip: 'Delete appointment',
             ),
           ],
         ),

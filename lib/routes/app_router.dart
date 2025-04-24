@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:meditim_assistance/screens/home_assistance_screen.dart';
-import 'package:meditim_assistance/screens/page_add_monthly_appointements.dart';
 import 'package:meditim_assistance/screens/page_archiv.dart';
 import 'package:meditim_assistance/screens/today_appointments.dart';
 import 'package:meditim_assistance/screens/page_Confirmed_Appointments.dart';
 import 'app_routes.dart';
 import 'package:meditim_assistance/screens/page_details_patient.dart';
 import 'package:meditim_assistance/screens/page_Notification_assistant.dart';
-import 'package:meditim_assistance/screens/page_add_weekly_app.dart';
 import 'package:meditim_assistance/screens/page_setting_assistant.dart';
 import 'package:meditim_assistance/screens/page_midical file.dart';
 import 'package:meditim_assistance/screens/modify_information_of_cilinc.dart';
+import 'package:meditim_assistance/screens/add_appointment.dart';
 
 class AppRouter {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
@@ -37,7 +36,7 @@ class AppRouter {
 
       case AppRoutes.pageDetailsPatient:
         return MaterialPageRoute(
-          builder: (_) => const PageDetailsPatient(),
+          builder: (_) => const PatientProfileCard(),
         );
 
       case AppRoutes.pageNotificationassistant:
@@ -45,14 +44,10 @@ class AppRouter {
           builder: (_) => const NotificationsPage(),
         );
 
-      case AppRoutes.pageaddweeklyapp:
+      case AppRoutes.addAppointment:
         return MaterialPageRoute(
-          builder: (_) => const AddweeklyAppointmentPage(),
+          builder: (_) => const AddAppointmentPage(),
         );
-
-      case AppRoutes.pageaddmonthlyappointements:
-        return MaterialPageRoute(
-            builder: (_) => const AddMonthlyAppointmentPage());
 
       case AppRoutes.pagesettingassistant:
         return MaterialPageRoute(builder: (_) => const SettingsPage());

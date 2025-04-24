@@ -1,111 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:meditim_assistance/constants/colors.dart';
 
-class PageDetailsPatient extends StatelessWidget {
-  const PageDetailsPatient({super.key});
+class PatientProfileCard extends StatelessWidget {
+  const PatientProfileCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)?.settings.arguments;
-
-    if (args == null || args is! Map<String, String>) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('تفاصيل الموعد')),
-        body: const Center(child: Text('لا توجد بيانات متاحة')),
-      );
-    }
-
-    final Map<String, String> appointment = args;
-
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
-        appBar: AppBar(
-          title: const Text(
-            'تفاصيل الموعد',
-            style: TextStyle(color: AppColors.whiteColor),
-          ),
-          backgroundColor: AppColors.primary,
-          iconTheme: const IconThemeData(color: AppColors.whiteColor),
+    return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
+      appBar: AppBar(
+        title: const Text(
+          "Patient Details",
+          style: TextStyle(color: AppColors.whiteColor),
         ),
-        body: Center(
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 700),
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const CircleAvatar(
-                  radius: 60,
-                  backgroundImage: AssetImage('assets/images/avatar1.png'),
+        backgroundColor: AppColors.primary,
+        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 400),
+          margin: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 10,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const CircleAvatar(
+                radius: 40,
+                backgroundColor: AppColors.primary,
+                child: Icon(Icons.person, size: 40, color: Colors.white),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                "John Doe",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textColor,
                 ),
-                const SizedBox(height: 30),
-                _buildInfoCard("اسم المريض", appointment['name']!),
-                _buildInfoCard("تاريخ الموعد", appointment['date']!),
-                _buildInfoCard("الوقت", appointment['time']!),
-                _buildInfoCard("رقم الطلب", "#${appointment['order']}"),
-                const Spacer(),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  onPressed: () {},
-                  icon: const Icon(Icons.phone, color: Colors.white),
-                  label: const Text(
-                    "الاتصال بالمريض",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )
-              ],
-            ),
+              ),
+              const SizedBox(height: 24),
+              _buildInfoTile(Icons.email, "Email", "johndoe@example.com"),
+              _buildInfoTile(Icons.phone, "Phone", "+1 555 123 456"),
+              _buildInfoTile(Icons.cake, "Birthday", "1990-05-10"),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildInfoCard(String title, String value) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      decoration: BoxDecoration(
-        color: AppColors.textColor,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          )
-        ],
-      ),
-      child: Row(
-        children: [
-          Text(
-            "$title:",
-            style: const TextStyle(
-              fontSize: 16,
+  Widget _buildInfoTile(IconData icon, String title, String value) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(icon, color: AppColors.primary),
+      title: Text(title,
+          style: const TextStyle(
+              fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: AppColors.textColor,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              value,
-              style: const TextStyle(
-                fontSize: 16,
-                color: AppColors.textColor,
-              ),
-            ),
-          ),
-        ],
-      ),
+              color: AppColors.textColor)),
+      subtitle: Text(value,
+          style: const TextStyle(fontSize: 14, color: AppColors.textColor)),
     );
   }
 }

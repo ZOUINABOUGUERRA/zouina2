@@ -12,11 +12,11 @@ class ClinicInfoPage extends StatefulWidget {
 
 class _ClinicInfoPageState extends State<ClinicInfoPage> {
   final TextEditingController clinicNameController =
-      TextEditingController(text: 'عيادة الشفاء');
+      TextEditingController(text: 'Al Shifa Clinic');
   final TextEditingController clinicAddressController =
-      TextEditingController(text: 'شارع الأمير عبد القادر، الجزائر');
+      TextEditingController(text: 'Prince Abdelkader Street, Algiers');
   final List<TextEditingController> doctorControllers = [
-    TextEditingController(text: 'د. أحمد الزهراوي'),
+    TextEditingController(text: 'Dr. Ahmed Zahrawi'),
   ];
 
   File? clinicImage;
@@ -35,7 +35,7 @@ class _ClinicInfoPageState extends State<ClinicInfoPage> {
 
   void _saveChanges() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('تم حفظ معلومات العيادة')),
+      const SnackBar(content: Text('Clinic information saved')),
     );
   }
 
@@ -55,7 +55,7 @@ class _ClinicInfoPageState extends State<ClinicInfoPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        title: const Text('معلومات العيادة'),
+        title: const Text('Clinic Information'),
         backgroundColor: AppColors.primary,
         centerTitle: true,
         actions: [
@@ -70,7 +70,7 @@ class _ClinicInfoPageState extends State<ClinicInfoPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionTitle('صورة العيادة'),
+            _buildSectionTitle('Clinic Image'),
             GestureDetector(
               onTap: _pickImage,
               child: Container(
@@ -95,13 +95,13 @@ class _ClinicInfoPageState extends State<ClinicInfoPage> {
               ),
             ),
             const SizedBox(height: 16),
-            _buildSectionTitle('اسم العيادة'),
+            _buildSectionTitle('Clinic Name'),
             _buildTextField(controller: clinicNameController),
             const SizedBox(height: 16),
-            _buildSectionTitle('عنوان العيادة'),
+            _buildSectionTitle('Clinic Address'),
             _buildTextField(controller: clinicAddressController),
             const SizedBox(height: 16),
-            _buildSectionTitle('أطباء العيادة'),
+            _buildSectionTitle('Clinic Doctors'),
             ...doctorControllers.asMap().entries.map((entry) {
               final index = entry.key;
               final controller = entry.value;
@@ -112,7 +112,7 @@ class _ClinicInfoPageState extends State<ClinicInfoPage> {
                     Expanded(
                       child: _buildTextField(
                         controller: controller,
-                        label: 'اسم الطبيب ${index + 1}',
+                        label: 'Doctor Name ${index + 1}',
                       ),
                     ),
                     if (doctorControllers.length > 1)
@@ -131,7 +131,7 @@ class _ClinicInfoPageState extends State<ClinicInfoPage> {
                 onPressed: _addDoctor,
                 icon: const Icon(Icons.add, color: AppColors.primary),
                 label: const Text(
-                  'إضافة طبيب',
+                  'Add Doctor',
                   style: TextStyle(color: AppColors.primary),
                 ),
               ),
@@ -142,7 +142,7 @@ class _ClinicInfoPageState extends State<ClinicInfoPage> {
               child: ElevatedButton.icon(
                 onPressed: _saveChanges,
                 icon: const Icon(Icons.save),
-                label: const Text('حفظ'),
+                label: const Text('Save'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.buttonColor,
                   padding: const EdgeInsets.symmetric(vertical: 14),

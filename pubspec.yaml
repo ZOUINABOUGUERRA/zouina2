@@ -1,6 +1,6 @@
 name: meditim_assistance
 description: A new Flutter project.
-publish_to: 'none' # Remove this line if you plan to publish the package
+publish_to: 'none'
 
 version: 1.0.0+1
 
@@ -16,6 +16,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   image_picker: ^0.8.5+3
+  badges: ^3.1.1  
 
 dev_dependencies:
   flutter_test:

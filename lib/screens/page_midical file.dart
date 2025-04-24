@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meditim_assistance/constants/colors.dart'; // غيّر المسار حسب مشروعك
+import 'package:meditim_assistance/constants/colors.dart'; // Update path if needed
 
 class MedicalFilePage extends StatelessWidget {
   const MedicalFilePage({super.key});
@@ -11,7 +11,7 @@ class MedicalFilePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         title: const Text(
-          'الملف الطبي',
+          'Medical File',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.whiteColor,
@@ -98,8 +98,7 @@ class MedicalFilePage extends StatelessWidget {
             ),
             Chip(
               label: Text('Technology'),
-              backgroundColor:
-                  Colors.orange, // إذا عندك لون معين ممكن نحطه هنا بعد
+              backgroundColor: Colors.orange,
               labelStyle: TextStyle(color: AppColors.whiteColor),
             ),
           ],
@@ -134,7 +133,7 @@ class MedicalFilePage extends StatelessWidget {
         Center(
           child: ElevatedButton.icon(
             onPressed: () {
-              // وظيفة تحميل PDF
+              // Function to download PDF
             },
             icon: const Icon(Icons.picture_as_pdf),
             label: const Text('Download PDF'),

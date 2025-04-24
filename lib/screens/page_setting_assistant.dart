@@ -11,14 +11,14 @@ class SettingsPage extends StatelessWidget {
     final isLargeScreen = MediaQuery.of(context).size.width > 600;
 
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: TextDirection.ltr,
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: isLargeScreen
             ? null
             : AppBar(
                 title: const Text(
-                  'الإعدادات',
+                  'Settings',
                   style: TextStyle(color: AppColors.whiteColor),
                 ),
                 centerTitle: true,
@@ -32,7 +32,7 @@ class SettingsPage extends StatelessWidget {
                 const SizedBox(
                   width: 200,
                   child: Drawer(
-                    child: Center(child: Text("الإعدادات")),
+                    child: Center(child: Text("Settings")),
                   ),
                 ),
               Expanded(
@@ -54,10 +54,10 @@ class SettingsPage extends StatelessWidget {
   Widget _buildSettingsList(BuildContext context) {
     return ListView(
       children: [
-        _buildSectionHeader('عام'),
+        _buildSectionHeader('General'),
         _buildSettingItem(
           icon: Icons.business,
-          title: 'تعديل معلومات العيادة',
+          title: 'Edit Clinic Information',
           onTap: () {
             Navigator.push(
               context,
@@ -67,7 +67,7 @@ class SettingsPage extends StatelessWidget {
         ),
         _buildSettingItem(
           icon: Icons.person,
-          title: 'ملف المساعد',
+          title: 'Assistant Profile',
           onTap: () {
             Navigator.push(
               context,
@@ -77,20 +77,20 @@ class SettingsPage extends StatelessWidget {
         ),
         _buildSettingItem(
           icon: Icons.language,
-          title: 'تغيير اللغة',
+          title: 'Change Language',
           onTap: () {
-            // نضيف وظيفة تغيير اللغة لاحقًا
+            // Add language change logic later
           },
         ),
         const Divider(height: 40),
-        _buildSectionHeader('الحساب'),
+        _buildSectionHeader('Account'),
         _buildSettingItem(
           icon: Icons.logout,
-          title: 'تسجيل الخروج',
+          title: 'Log Out',
           iconColor: AppColors.errorColor,
           textColor: AppColors.errorColor,
           onTap: () {
-            // نضيف تسجيل الخروج لاحقًا
+            // Add logout logic later
           },
         ),
       ],
