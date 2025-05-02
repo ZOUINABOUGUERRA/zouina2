@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-//import 'package:badges/badges.dart' as badges;
 import 'package:meditim_assistance/constants/colors.dart';
 import 'package:meditim_assistance/routes/app_routes.dart';
 import 'package:meditim_assistance/widgets/custom_nav_bar.dart';
 import 'package:meditim_assistance/screens/page_Confirmed_Appointments.dart';
 import 'package:meditim_assistance/screens/page_setting_assistant.dart';
-//import 'package:meditim_assistance/screens/page_Notification_assistant.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,10 +15,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   final PageController _pageController = PageController();
-  final int _notificationCount = 3;
 
   final List<Widget> _pages = [
-    _MainContent(),
+    const _MainContent(),
     const ConfirmedAppointmentsScreen(),
     const SettingsPage(),
   ];
@@ -30,13 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        title: const Text(
-          'Home',
-          style: TextStyle(
-            color: AppColors.whiteColor,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         centerTitle: true,
         backgroundColor: AppColors.primary,
         elevation: 0,
@@ -49,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: CustomNavBar(
         currentIndex: _currentIndex,
-        //notificationCount: _notificationCount,
         onTabChanged: (index) {
           setState(() => _currentIndex = index);
           _pageController.animateToPage(
@@ -64,221 +53,88 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _MainContent extends StatelessWidget {
+  const _MainContent();
+
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final availableHeight = mediaQuery.size.height -
+        kToolbarHeight -
+        mediaQuery.padding.top -
+        kBottomNavigationBarHeight;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final isTabletOrBigger = constraints.maxWidth >= 600;
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+        return SizedBox(
+          height: availableHeight,
           child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 800),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Welcome, Assistant",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textColor,
-                        ),
+            child: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 20,
+                  runSpacing: 20,
+                  children: [
+                    _buildResponsiveCard(
+                      isTabletOrBigger,
+                      constraints.maxWidth,
+                      delay: 0,
+                      child: _AnimatedCard(
+                        onTap: () => Navigator.pushNamed(
+                            context, AppRoutes.addAppointment),
+                        icon: Icons.add_circle_outlined,
+                        title: 'Add Appointment',
+                        subtitle: 'Create a new appointment',
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.notifications,
-                            color: AppColors.primary),
-                        onPressed: () => Navigator.pushNamed(
-                            context, AppRoutes.pageNotificationassistant),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 20,
-                      runSpacing: 20,
-                      children: [
-                        _buildResponsiveCard(
-                          isTabletOrBigger,
-                          constraints.maxWidth,
-                          child: _AnimatedCard(
-                            onTap: () => Navigator.pushNamed(
-                                context, AppRoutes.addAppointment),
-                            child: const Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Hero(
-                                        tag: 'icon_add',
-                                        child: Icon(Icons.add_circle_outlined,
-                                            color: AppColors.primary, size: 28),
-                                      ),
-                                      SizedBox(width: 12),
-                                      Text(
-                                        'Add Appointment',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.textColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Create a new appointment',
-                                    style: TextStyle(
-                                      color: AppColors.textColor,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        _buildResponsiveCard(
-                          isTabletOrBigger,
-                          constraints.maxWidth,
-                          child: _AnimatedCard(
-                            onTap: () => Navigator.pushNamed(
-                                context, AppRoutes.showAppointment),
-                            child: const Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.calendar_today_outlined,
-                                          color: AppColors.primary, size: 28),
-                                      SizedBox(width: 12),
-                                      Text(
-                                        'Show Appointment',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.textColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Browse scheduled appointments',
-                                    style: TextStyle(
-                                      color: AppColors.textColor,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        _buildResponsiveCard(
-                          isTabletOrBigger,
-                          constraints.maxWidth,
-                          child: _AnimatedCard(
-                            onTap: () => Navigator.pushNamed(
-                                context, AppRoutes.todayAppointments),
-                            child: const Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.event_available_outlined,
-                                          color: AppColors.primary, size: 28),
-                                      SizedBox(width: 12),
-                                      Text(
-                                        "Today's Appointments",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.textColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    "Check today's schedule",
-                                    style: TextStyle(
-                                      color: AppColors.textColor,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        _buildResponsiveCard(
-                          isTabletOrBigger,
-                          constraints.maxWidth,
-                          child: _AnimatedCard(
-                            onTap: () => Navigator.pushNamed(
-                              context,
-                              AppRoutes.pageArchiv,
-                              arguments: {
-                                'type': 'archived',
-                                'patient': 'John Doe',
-                                'date': '2025-04-12',
-                                'status': 'Completed',
-                              },
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.archive_outlined,
-                                          color: AppColors.primary, size: 28),
-                                      SizedBox(width: 12),
-                                      Text(
-                                        'Archive',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.textColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'View Archived Appointments',
-                                    style: TextStyle(
-                                      color: AppColors.textColor,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
-                  ),
-                ],
+                    _buildResponsiveCard(
+                      isTabletOrBigger,
+                      constraints.maxWidth,
+                      delay: 100,
+                      child: _AnimatedCard(
+                        onTap: () => Navigator.pushNamed(
+                            context, AppRoutes.showAppointment),
+                        icon: Icons.calendar_today_outlined,
+                        title: 'Show Appointment',
+                        subtitle: 'Browse scheduled appointments',
+                      ),
+                    ),
+                    _buildResponsiveCard(
+                      isTabletOrBigger,
+                      constraints.maxWidth,
+                      delay: 200,
+                      child: _AnimatedCard(
+                        onTap: () => Navigator.pushNamed(
+                            context, AppRoutes.todayAppointments),
+                        icon: Icons.event_available_outlined,
+                        title: "Today's Appointments",
+                        subtitle: "Check today's schedule",
+                      ),
+                    ),
+                    _buildResponsiveCard(
+                      isTabletOrBigger,
+                      constraints.maxWidth,
+                      delay: 300,
+                      child: _AnimatedCard(
+                        onTap: () => Navigator.pushNamed(
+                          context,
+                          AppRoutes.pageArchiv,
+                          arguments: {
+                            'type': 'archived',
+                            'patient': 'John Doe',
+                            'date': '2025-04-12',
+                            'status': 'Completed',
+                          },
+                        ),
+                        icon: Icons.archive_outlined,
+                        title: 'Archive',
+                        subtitle: 'View Archived Appointments',
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -288,19 +144,26 @@ class _MainContent extends StatelessWidget {
   }
 
   Widget _buildResponsiveCard(bool isTablet, double maxWidth,
-      {required Widget child}) {
+      {required Widget child, required int delay}) {
     return SizedBox(
       width: isTablet ? (maxWidth / 2) - 32 : double.infinity,
-      child: child,
+      child: _CardWithAnimation(delay: delay, child: child),
     );
   }
 }
 
 class _AnimatedCard extends StatefulWidget {
   final VoidCallback onTap;
-  final Widget child;
+  final IconData icon;
+  final String title;
+  final String subtitle;
 
-  const _AnimatedCard({required this.onTap, required this.child});
+  const _AnimatedCard({
+    required this.onTap,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+  });
 
   @override
   State<_AnimatedCard> createState() => _AnimatedCardState();
@@ -323,13 +186,95 @@ class _AnimatedCardState extends State<_AnimatedCard>
         scale: _scale,
         duration: const Duration(milliseconds: 100),
         child: Card(
-          elevation: 4,
-          shadowColor: Colors.black.withOpacity(0.1),
+          elevation: 6,
+          shadowColor: Colors.black.withOpacity(0.15),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
           ),
-          child: widget.child,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(widget.icon, color: AppColors.primary, size: 28),
+                    const SizedBox(width: 12),
+                    Text(
+                      widget.title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textColor,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  widget.subtitle,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: AppColors.textColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class _CardWithAnimation extends StatefulWidget {
+  final Widget child;
+  final int delay;
+
+  const _CardWithAnimation({required this.child, required this.delay});
+
+  @override
+  State<_CardWithAnimation> createState() => _CardWithAnimationState();
+}
+
+class _CardWithAnimationState extends State<_CardWithAnimation>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacity;
+  late Animation<Offset> _offset;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+
+    _opacity = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
+    _offset =
+        Tween<Offset>(begin: const Offset(0, 0.1), end: Offset.zero).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
+
+    Future.delayed(Duration(milliseconds: widget.delay), () {
+      if (mounted) _controller.forward();
+    });
+  }
+
+  @override
+  void dispose() => _controller.dispose();
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _opacity,
+      child: SlideTransition(
+        position: _offset,
+        child: widget.child,
       ),
     );
   }
